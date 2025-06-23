@@ -1,3 +1,4 @@
+"use client";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Card, CardTitle, CardDescription } from "@/components/ui/card";
 import { GitHub } from "@/components/icons/github";
@@ -17,7 +18,11 @@ interface Contributor {
 }
 
 export default function Contributors() {
-	const { isPending, error, data } = useQuery({
+	const {
+		isPending,
+		error,
+		data: contributors,
+	} = useQuery<Contributor[]>({
 		queryKey: ["contributorsData"],
 		queryFn: async () => {
 			const response = await axios.get("https://api.github.com/repos/nimbusdotstorage/Nimbus/contributors", {
@@ -51,8 +56,6 @@ export default function Contributors() {
 			</div>
 		);
 	}
-
-	const contributors = data as Contributor[];
 
 	if (!contributors || contributors.length === 0) {
 		return (
